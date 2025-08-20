@@ -18,14 +18,14 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # ===== Runtime stage =====
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS runtime
 WORKDIR /app
 
 # Segurança: cria usuário não-root
 # (Debian-based image: useradd disponível)
-RUN useradd -m appuser
+#RUN useradd -m appuser
 COPY --from=build /app/publish ./
-RUN chown -R appuser:appuser /app
+#RUN chown -R appuser:appuser /app
 
 # Porta exposta pelo Kestrel no container
 EXPOSE 5000
@@ -36,8 +36,7 @@ ENV ASPNETCORE_URLS=http://+:5000 \
     OTEL_EXPORTER_OTLP_PROTOCOL=grpc
 
 # Executa como não-root
-USER appuser
+#USER appuser
 
 # Inicia a aplicação
-# Ajuste o nome do DLL se seu .csproj tiver outro <AssemblyName>
 ENTRYPOINT ["dotnet", "poc.dll"]
