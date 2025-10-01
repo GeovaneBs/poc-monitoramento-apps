@@ -32,13 +32,14 @@ A arquitetura utiliza Docker Compose para orquestrar os seguintes serviços:
    docker-compose up --build
 
 Acesse os serviços:
-Serviço	URL Local	Descrição
-App (.NET)	http://localhost:5000	Endpoint principal da aplicação
-Jaeger UI	http://localhost:16686	Visualização de traces
-Prometheus	http://localhost:9090	Visualização de métricas
-Grafana	http://localhost:3000	Dashboards de métricas/logs
-Kibana	http://localhost:5601	Visualização de logs (ES)
-Elasticsearch	http://localhost:9200	API do Elasticsearch
+
+Serviço	         URL Local	                  Descrição
+App (.NET)	      http://localhost:5000         Endpoint principal da aplicação
+Jaeger UI	      http://localhost:16686   	   Visualização de traces
+Prometheus	      http://localhost:9090	      Visualização de métricas
+Grafana	         http://localhost:3000	      Dashboards de métricas/logs
+Kibana	         http://localhost:5601	      Visualização de logs (ES)
+Elasticsearch	   http://localhost:9200	      API do Elasticsearch
 Endpoints da Aplicação
 GET /
 Retorna uma mensagem de teste e gera logs de vários níveis para observabilidade.
