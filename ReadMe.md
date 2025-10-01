@@ -54,14 +54,19 @@ Traces são exportados via OTLP para Jaeger.
 Métricas são expostas pelo OpenTelemetry Collector para Prometheus.
 Usuários Padrão
 Grafana:
+
 Usuário: admin
+
 Senha: admin
+
 Arquivos Importantes
+
 docker-compose.yml: Orquestra todos os serviços.
 dotnet-app/Program.cs: Instrumentação da aplicação.
 otel-collector-config.yaml: Configuração do OpenTelemetry Collector.
 prometheus.yaml: Configuração do Prometheus.
 Observações
+
 O Elasticsearch está configurado sem autenticação para facilitar testes.
 O OpenTelemetry Collector está configurado para receber traces via OTLP (gRPC e HTTP).
 Os logs podem ser visualizados tanto no Kibana quanto no Grafana (via Loki).
