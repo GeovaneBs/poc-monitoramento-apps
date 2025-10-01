@@ -7,8 +7,10 @@ services:
       - "16686:16686" # UI Jaeger
       - "4317:4317"   # OTLP gRPC
       - "4318:4318"   # OTLP HTTP
+      - "14269:14269" # Admin/metrics
     environment:
       - COLLECTOR_OTLP_ENABLED=true
+      - METRICS_STORAGE_TYPE=prometheus
 
   otel-collector:
     image: otel/opentelemetry-collector:0.104.0
@@ -30,16 +32,20 @@ services:
     ports:
       - "9090:9090"
 
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
     ports:
       - "3000:3000"
     depends_on:
       - prometheus
+      - loki
 
   loki:
     image: grafana/loki:2.9.2
@@ -56,11 +62,13 @@ services:
       - OTEL_TRACES_EXPORTER=otlp
       - JAEGER_AGENT_HOST=jaeger
       - JAEGER_AGENT_PORT=4317
+      - LOKI_URL=http://loki:3100
       - ASPNETCORE_URLS=http://+:8080
     ports:
       - "5000:8080"
     depends_on:
       - otel-collector
+      - loki
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
     environment:
