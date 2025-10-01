@@ -12,15 +12,21 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .Enrich.FromLogContext()
     .Enrich.WithSpan()
-    .Enrich.WithProperty("Application", "poc-dotnet")
-    .Enrich.WithProperty("Environment", "development")
-    .WriteTo.Console()
-    .WriteTo.GrafanaLoki(lokiUrl, labels: new[]
-    {
-        new LokiLabel { Key = "app", Value = "poc-dotnet" },
-        new LokiLabel { Key = "env", Value = "development" }
-    })
+    .Enrich.WithProperty("service_name", "poc-dotnet")
+    .Enrich.WithProperty("environment", "development")
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.GrafanaLoki(
+        uri: lokiUrl,
+        labels: new List<LokiLabel>
+        {
+            new LokiLabel { Key = "app", Value = "poc-dotnet" },
+            new LokiLabel { Key = "environment", Value = "development" }
+        }
+    )
     .CreateLogger();
+
+Console.WriteLine($"[STARTUP] Loki configured at: {lokiUrl}");
+Log.Information("Application starting - Loki URL: {LokiUrl}", lokiUrl);
 
 var builder = WebApplication.CreateBuilder(args);
 
