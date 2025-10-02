@@ -41,7 +41,7 @@ builder.Services.AddOpenTelemetry()
         .AddHttpClientInstrumentation()
         .AddOtlpExporter(o =>
         {
-            o.Endpoint = new Uri("http://jaeger:4317");
+            o.Endpoint = new Uri("http://otel-collector:4317");
         })
     );
 
